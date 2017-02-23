@@ -1,5 +1,5 @@
-# zlib-ubuntu
-Builds a deb package (two, actually) for zstd. Version is specified in ./build
+# bup-ubuntu
+Builds a deb package for bup. Version is specified in ./build
 
 ##Usage
 
