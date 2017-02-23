@@ -36,6 +36,7 @@ RUN fpm -s dir -t deb \
     -v $DEB_VERSION-$DEB_PACKAGE \
     -C /build/root \
     -p bup_VERSION_ARCH.deb \
+    -d 'python2.7' \
     -d 'python-pyxattr' \
     -d 'python-pylibacl' \
     -d 'acl' \
