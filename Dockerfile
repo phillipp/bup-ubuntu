@@ -21,32 +21,25 @@ ARG DEB_VERSION
 ARG DEB_PACKAGE
 
 # Download packages
-RUN wget -O zstd-$DEB_VERSION.tar.gz https://github.com/facebook/zstd/archive/v$DEB_VERSION.tar.gz \
-    && tar xfz zstd-$DEB_VERSION.tar.gz
+RUN wget -O bup-$DEB_VERSION.tar.gz https://github.com/bup/bup/archive/$DEB_VERSION.tar.gz \
+    && tar xfz bup-$DEB_VERSION.tar.gz
+
+RUN apt-get install -y python2.7-dev git-core python-pyxattr python-pylibacl linux-libc-dev
 
 # Compile and install
-RUN cd /build/zstd-$DEB_VERSION \
+RUN cd /build/bup-$DEB_VERSION \
     && make install DESTDIR=/build/root
 
 # Build deb
 RUN fpm -s dir -t deb \
-    -n libzstd0 \
+    -n bup \
     -v $DEB_VERSION-$DEB_PACKAGE \
     -C /build/root \
-    -p libzstd0_VERSION_ARCH.deb \
-    --description 'a high performance web server and a reverse proxy server' \
+    -p bup_VERSION_ARCH.deb \
+    -d 'python-pyxattr' \
+    -d 'python-pylibacl' \
+    -d 'acl' \
+    -d 'attr' \
     --maintainer 'Phillipp Röll <phillipp.roell@trafficplex.de>' \
     --deb-build-depends build-essential \
-    usr/local/lib usr/local/include
-
-# Build deb
-RUN fpm -s dir -t deb \
-    -n zstd \
-    -v $DEB_VERSION-$DEB_PACKAGE \
-    -C /build/root \
-    -p zstd_VERSION_ARCH.deb \
-    --depends "libzstd0 = $DEB_VERSION-$DEB_PACKAGE" \
-    --description 'a high performance web server and a reverse proxy server' \
-    --maintainer 'Phillipp Röll <phillipp.roell@trafficplex.de>' \
-    --deb-build-depends build-essential \
-    usr/local/bin usr/local/share
+    usr

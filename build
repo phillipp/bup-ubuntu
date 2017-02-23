@@ -1,16 +1,15 @@
 #! /bin/bash
 set -eux
 
-DEB_VERSION=1.1.3
+DEB_VERSION=0.29
 DEB_PACKAGE=trafficplex1
 
 echo "Building $DEB_VERSION-$DEB_PACKAGE.de"
 
-docker build --build-arg DEB_VERSION=$DEB_VERSION --build-arg DEB_PACKAGE=$DEB_PACKAGE -t zstd-bundle-deb .
-CONTAINER=$(docker create zstd-bundle-deb)
+docker build --build-arg DEB_VERSION=$DEB_VERSION --build-arg DEB_PACKAGE=$DEB_PACKAGE -t bup-bundle-deb .
+CONTAINER=$(docker create bup-bundle-deb)
 if [ ! -d ./artifacts ]; then
     mkdir ./artifacts
 fi
-docker cp $CONTAINER:/build/zstd_$DEB_VERSION-${DEB_PACKAGE}_amd64.deb ./artifacts/
-docker cp $CONTAINER:/build/libzstd0_$DEB_VERSION-${DEB_PACKAGE}_amd64.deb ./artifacts/
+docker cp $CONTAINER:/build/bup_$DEB_VERSION-${DEB_PACKAGE}_amd64.deb ./artifacts/
 docker rm $CONTAINER
